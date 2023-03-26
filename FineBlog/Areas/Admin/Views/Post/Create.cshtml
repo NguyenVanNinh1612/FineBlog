@@ -25,7 +25,7 @@
                         </div>
                         <div class="mb-2">
                             <label>Description</label>
-                            <textarea asp-for="Description" class="form-control" rows="8"></textarea>
+                            <textarea asp-for="Description" class="form-control" rows="17"></textarea>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
                     </div>
@@ -51,6 +51,7 @@
 </div>
 
 @section Scripts{
+    <partial name="_ValidationScriptsPartial" />
     <script>
         $(".custom-file").on("change", function(){
             var fileName = $(this).val().split("\\").pop();

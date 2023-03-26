@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using X.PagedList;
 
 namespace FineBlog.Areas.Admin.Controllers
 {
@@ -31,7 +32,7 @@ namespace FineBlog.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
             var listOfPosts = new List<Post>();
             var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity!.Name);
@@ -46,6 +47,8 @@ namespace FineBlog.Areas.Admin.Controllers
                     .Where(x => x.ApplicationUser!.Id == loggedInUser!.Id).ToListAsync();
             }
 
+    
+
             var listOfPostVM = listOfPosts.Select(x => new PostVM()
             {
                 Id = x.Id,
@@ -55,8 +58,10 @@ namespace FineBlog.Areas.Admin.Controllers
                 AuthorName = x.ApplicationUser!.FirstName + " " + x.ApplicationUser.LastName
 
             }).ToList();
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
 
-            return View(listOfPostVM);
+            return View(await listOfPostVM.OrderByDescending(x=>x.CreatedDate).ToPagedListAsync(pageNumber, pageSize));
 
         }
 
