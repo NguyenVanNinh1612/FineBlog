@@ -32,7 +32,7 @@ namespace FineBlog.Utilites
                     LastName = "Admin"
                 }, "Admin@0011").Wait();
 
-                var appUser = _context.ApplicationUsers.FirstOrDefault(x => x.Email == "admin@gmail.com");
+                var appUser = _context.ApplicationUsers!.FirstOrDefault(x => x.Email == "admin@gmail.com");
                 if (appUser != null)
                 {
                     _userManager.AddToRoleAsync(appUser, WebsiteRoles.WebsiteAdmin).GetAwaiter().GetResult();
@@ -58,7 +58,7 @@ namespace FineBlog.Utilites
                     }
                 };
 
-                _context.Pages.AddRange(listOfPages);
+                _context.Pages!.AddRange(listOfPages);
                 _context.SaveChanges();
             }
         }
